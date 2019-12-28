@@ -8,6 +8,7 @@ resource "aws_instance" "microk8s-node" {
   instance_type = "t2.micro"
   subnet_id     = "subnet-37fd037f"
   associate_public_ip_address = false
+  key_name = "cloud-dev-instance"
   tags = {
     Stack = "microk8s"
   }
