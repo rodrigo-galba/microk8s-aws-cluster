@@ -4,6 +4,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "microk8s-node" {
+  count = 3
   ami           = "ami-02c2bab84f4c66a4b"
   instance_type = "t2.micro"
   subnet_id     = "subnet-37fd037f"
@@ -13,4 +14,3 @@ resource "aws_instance" "microk8s-node" {
     Stack = "microk8s"
   }
 }
-
