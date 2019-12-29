@@ -1,0 +1,8 @@
+---
+- name: install MicroK8s packages
+  become: yes
+  command: snap install microk8s --classic --channel=1.16/stable
+
+- name: Setup permission to use MicroK8s
+  become: yes
+  command: usermod -a -G microk8s {{ local_user }}

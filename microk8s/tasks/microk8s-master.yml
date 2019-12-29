@@ -1,0 +1,28 @@
+---
+- name: Enable dns and dashboard on MicroK8s
+  command: microk8s.enable dns dashboard storage
+
+- name: Copy manifests
+  template:
+    src: templates/manifests/admin-user.yml
+    dest: "/home/{{ local_user }}/"
+    mode: 0644
+
+- name: Create admin user
+  command: "microk8s.kubectl apply -f /home/{{ local_user }}/admin-user.yml"
+
+# - name: Configure dashboard service port
+#   become: yes
+#   command: "microk8s.kubectl patch service kubernetes-dashboard --namespace=kube-system --type='json' --patch='[{\"op\": \"replace\", \"path\": \"/spec/ports/0/nodePort\", \"value\":30000}]'"
+
+# - name: Get admin user ID
+#   command: microk8s.kubectl get secrets -n kube-system | grep microk8s-admin | awk '{print $1}'
+#   register: microk8s_admin_secret
+
+# - debug: var=kube_admin_secret
+
+# - name: Get access token
+#   command: "microk8s.kubectl describe secret { microk8s_admin_secret } -n kube-system | grep token: | awk '{print $2}'"
+#   register: microk8s_admin_token
+
+# - debug: var=microk8s_admin_token

@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: true
+  vars:
+    host_user: "{{ lookup('env','USER') }}"
+    local_user: ubuntu
+
+  tasks:
+    - name: make sure they have minimum RAM required
+      fail: msg="not enough RAM"
+      when: ansible_memory_mb.real.total < 1900
+      
+    - name: make sure the system encoding is utf-8
+      become: yes
+      template:
+        src: templates/locale
+        dest: /etc/default/locale
+        owner: root
+        group: root
+        mode: 0644
+
+    - include: tasks/apt.yml
+    - include: tasks/ubuntu.yml
+    - include: tasks/microk8s-all.yml
+
+- hosts: kube-master
+  become: true
+  vars:
+    local_user: ubuntu
+  
+  tasks:
+    - include: tasks/microk8s-master.yml
