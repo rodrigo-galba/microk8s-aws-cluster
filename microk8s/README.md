@@ -61,6 +61,14 @@ su - $USER
 
 ```
 
+## Ansible playbook
+
+To run the playbook:
+```sh
+ANSIBLE_SUDO_PASS=my_password
+ansible-playbook -i hosts.ini --private-key=~/ec2.pem  -K -u ubuntu -e 'ansible_become_password=$ANSIBLE_SUDO_PASS' playbook.yml
+```
+
 ## Troubleshoot
 
 On master, the port 25000 is required to be opened.
